@@ -28,17 +28,18 @@ export async function RunOutputs({ run_id }: { run_id: string }) {
             run.data.gifs?.[0].filename;
 
           if (!fileName)
-            return (
-              <TableRow key={run.id}>
-                <TableCell>Output</TableCell>
-                <TableCell className="">
-                  <CodeBlock
-                    code={JSON.stringify(run.data, null, 2)}
-                    lang="json"
-                  />
-                </TableCell>
-              </TableRow>
-            );
+            // return (
+            //   <TableRow key={run.id}>
+            //     <TableCell>Output</TableCell>
+            //     <TableCell className="">
+            //       <CodeBlock
+            //         code={JSON.stringify(run.data, null, 2)}
+            //         lang="json"
+            //       />
+            //     </TableCell>
+            //   </TableRow>
+            // );
+            return;
 
           // const filePath
           return (

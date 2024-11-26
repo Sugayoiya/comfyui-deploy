@@ -1,3 +1,5 @@
 __pycache__
 .DS_Store
+web/bun.lockb
+
 file-hash-cache.json

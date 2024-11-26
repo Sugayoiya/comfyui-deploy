@@ -191,14 +191,14 @@ export const createRun = withServerPromise(
             ...shareData,
             prompt_id: prompt_id,
           };
-          // console.log(body);
+          console.log(body);
           const comfyui_endpoint = `${machine.endpoint}/comfyui-deploy/run`;
           const _result = await fetch(comfyui_endpoint, {
             method: "POST",
             body: JSON.stringify(body),
             cache: "no-store",
           });
-          // console.log(_result);
+          console.log(_result);
 
           if (!_result.ok) {
             let message = `Error creating run, ${_result.statusText}`;
