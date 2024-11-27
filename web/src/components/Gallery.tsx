@@ -1,26 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-
-// 假数据
-const fakeImages = Array.from({ length: 50 }, (_, i) => ({
-  id: i + 1,
-  url: `https://via.placeholder.com/150?text=Image+${i + 1}`,
-}));
+import { getWorkflowRunOutputsByWorkflowId } from "@/server/getAllWorkflowOutputWithId";
 
 const ITEMS_PER_PAGE = 10;
 
-export function Gallery({ workflowId }: { workflowId: string }) {
+export async function Gallery({ workflowId }: { workflowId: string }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedImages, setSelectedImages] = useState<number[]>([]);
+  const [images, setImages] = useState<any[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const totalPages = Math.ceil(fakeImages.length / ITEMS_PER_PAGE);
-  const currentImages = fakeImages.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
+
+  useEffect(() => {
+    async function fetchData() {
+      const { data, total } = await getWorkflowRunOutputsByWorkflowId(workflowId, currentPage, ITEMS_PER_PAGE);
+      console.log("gallery image data: ", data);
+      // console.log("gallery total: ", total);
+      setImages(data);
+      setTotalPages(Math.ceil(total / ITEMS_PER_PAGE));
+    }
+    fetchData();
+  }, [workflowId, currentPage]);
 
   const handleDownload = (urls: string[]) => {
     urls.forEach((url) => {
@@ -32,7 +35,7 @@ export function Gallery({ workflowId }: { workflowId: string }) {
   };
 
   const handleSelectAll = () => {
-    setSelectedImages(currentImages.map((image) => image.id));
+    setSelectedImages(images.map((image) => image.id));
   };
 
   const handleDeselectAll = () => {
@@ -55,7 +58,7 @@ export function Gallery({ workflowId }: { workflowId: string }) {
         <Button
           onClick={() =>
             handleDownload(
-              currentImages
+              images
                 .filter((image) => selectedImages.includes(image.id))
                 .map((image) => image.url)
             )
@@ -66,7 +69,7 @@ export function Gallery({ workflowId }: { workflowId: string }) {
         </Button>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {currentImages.map((image) => (
+        {images.map((image) => (
           <div key={image.id} className="relative">
             <img src={image.url} alt={`Image ${image.id}`} className="w-full" />
             <Checkbox
