@@ -4,7 +4,7 @@ import { Gallery } from "@/components/Gallery";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function Page({
-  params
+  params,
 }: {
   params: { workflow_id: string };
 }) {
@@ -15,12 +15,12 @@ export default async function Page({
       <CardHeader className="relative">
         <CardTitle>Gallery</CardTitle>
         <div className="absolute right-6 top-6">
-          <RouteRefresher interval={5000} autoRefresh={false} />
+          <RouteRefresher interval={5000} autoRefresh={true} />
         </div>
       </CardHeader>
 
       <CardContent>
-        <LoadingWrapper tag="runs">
+        <LoadingWrapper tag="gallery">
           <Gallery workflowId={workflow_id} />
         </LoadingWrapper>
       </CardContent>

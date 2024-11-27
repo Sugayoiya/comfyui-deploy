@@ -4,23 +4,23 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { getWorkflowRunOutputsByWorkflowId } from "@/server/getAllWorkflowOutputWithId";
+import { PaginationControl } from "./PaginationControl";
 
-const ITEMS_PER_PAGE = 10;
+const itemPerPage = 10;
 
-export async function Gallery({ workflowId }: { workflowId: string }) {
+export function Gallery({ workflowId }: { workflowId: string }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedImages, setSelectedImages] = useState<number[]>([]);
   const [images, setImages] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState(0);
 
-
   useEffect(() => {
     async function fetchData() {
-      const { data, total } = await getWorkflowRunOutputsByWorkflowId(workflowId, currentPage, ITEMS_PER_PAGE);
+      console.log("Fetching data...");
+      const { data, total } = await getWorkflowRunOutputsByWorkflowId(workflowId, currentPage, itemPerPage);
       console.log("gallery image data: ", data);
-      // console.log("gallery total: ", total);
       setImages(data);
-      setTotalPages(Math.ceil(total / ITEMS_PER_PAGE));
+      setTotalPages(Math.ceil(total / itemPerPage));
     }
     fetchData();
   }, [workflowId, currentPage]);
@@ -53,9 +53,9 @@ export async function Gallery({ workflowId }: { workflowId: string }) {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <Button onClick={handleSelectAll}>Select All</Button>
-        <Button onClick={handleDeselectAll}>Deselect All</Button>
-        <Button
+      <Button onClick={handleSelectAll}>Select All</Button>
+      <Button onClick={handleDeselectAll}>Deselect All</Button>
+      <Button
           onClick={() =>
             handleDownload(
               images
@@ -71,7 +71,7 @@ export async function Gallery({ workflowId }: { workflowId: string }) {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {images.map((image) => (
           <div key={image.id} className="relative">
-            <img src={image.url} alt={`Image ${image.id}`} className="w-full" />
+            <img src={image.url} alt={image.id} className="w-full"/>
             <Checkbox
               checked={selectedImages.includes(image.id)}
               onCheckedChange={() => handleToggleSelect(image.id)}
@@ -80,23 +80,12 @@ export async function Gallery({ workflowId }: { workflowId: string }) {
           </div>
         ))}
       </div>
-      <div className="flex justify-between items-center mt-4">
-        <Button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </Button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <Button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </Button>
-      </div>
+      {totalPages > 0 && (
+        <PaginationControl
+          totalPage={totalPages}
+          currentPage={currentPage}
+        />
+      )}
     </div>
   );
 }
