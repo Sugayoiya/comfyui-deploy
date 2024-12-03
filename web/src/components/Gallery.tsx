@@ -90,17 +90,21 @@ return (
       </Button>
     </div>
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {images.map((image) => (
-        <div key={image.id} className="relative">
-          <img src={image.url} alt={image.id} className="w-full"/>
-          <Checkbox
-            checked={selectedImages.includes(image.id)}
-            onCheckedChange={() => handleToggleSelect(image.id)}
-            className="absolute top-2 right-2"
-          />
-        </div>
-      ))}
-    </div>
+        {images.map((image) => (
+          <div
+            key={image.id}
+            className="relative cursor-pointer"
+            onClick={() => handleToggleSelect(image.id)}
+          >
+            <img src={image.url} alt={image.id} className="w-full" />
+            <Checkbox
+              checked={selectedImages.includes(image.id)}
+              onChange={(e) => e.stopPropagation()}
+              className="absolute top-2 right-2"
+            />
+          </div>
+        ))}
+      </div>
     {totalPages > 0 && (
       <PaginationControl
         totalPage={totalPages}
