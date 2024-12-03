@@ -5,7 +5,7 @@
                 "*"
             ],
             "AllowedMethods": [
-                "PUT"
+                "PUT","GET","POST"
             ],
             "AllowedOrigins": [
                 "*"
