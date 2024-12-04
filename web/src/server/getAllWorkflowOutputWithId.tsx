@@ -55,14 +55,24 @@ export async function getWorkflowRunOutputsByWorkflowId(
 
   const total = runOutputs.length > 0 ? runOutputs[0].total : 0;
 
-  // 预处理数据，提取出图片 URL
-  const processedData = runOutputs.flatMap((output) =>
-    output.data.images.map((image: any) => ({
-      id: image.filename,
-      url: replaceCDNUrl(
-		`${process.env.SPACES_ENDPOINT}/${process.env.SPACES_BUCKET}/outputs/runs/${output.run_id}/${image.filename}`),
-    }))
-  );
+  // 预处理数据，提取出图片和 GIF URL
+const processedData = runOutputs.flatMap((output) => {
+  const images = output.data.images ? output.data.images.map((image: any) => ({
+    id: image.filename,
+    url: replaceCDNUrl(
+      `${process.env.SPACES_ENDPOINT}/${process.env.SPACES_BUCKET}/outputs/runs/${output.run_id}/${image.filename}`
+    ),
+  })) : [];
+
+  const gifs = output.data.gifs ? output.data.gifs.map((gif: any) => ({
+    id: gif.filename,
+    url: replaceCDNUrl(
+      `${process.env.SPACES_ENDPOINT}/${process.env.SPACES_BUCKET}/outputs/runs/${output.run_id}/${gif.filename}`
+    ),
+  })) : [];
+
+  return [...images, ...gifs];
+});
 
   return { data: processedData, total };
 }

@@ -26,6 +26,8 @@ export async function GET(request: Request) {
       isPublic: true,
     });
 
+    // console.log("uploadUrl:", uploadUrl);
+
     return NextResponse.json(
       {
         url: uploadUrl,

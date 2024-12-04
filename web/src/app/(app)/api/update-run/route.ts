@@ -20,8 +20,8 @@ export async function POST(request: Request) {
   const { run_id, status, output_data } = data;
 
   // console.log("output_data:", run_id, status, output_data);
-  // 检查 output_data 是否包含 images 字段，并且该字段是否为数组
-  if (output_data && Array.isArray(output_data.images)) {
+  // 检查 output_data 是否包含 images 或 gifs 字段，并且这些字段是否为数组
+  if (output_data && (Array.isArray(output_data.images) || Array.isArray(output_data.gifs))) {
     const workflow_run_output = await db.insert(workflowRunOutputs).values({
       run_id: run_id,
       data: output_data,
