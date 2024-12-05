@@ -10,19 +10,25 @@ import {
 import { count, desc, eq, sql, inArray } from "drizzle-orm";
 import { replaceCDNUrl } from "@/server/replaceCDNUrl";
 
-export async function getWorkflowRunOutputsByWorkflowId( 
-	workflowId: string,
-	page: number = 1,
-	itemsPerPage: number = 10
-  ) {
-	
-	const offset = (page - 1) * itemsPerPage;
+type OutPutSearchTypes = {
+  workflow_id: string;
+  limit: number;
+  offset: number;
+};
+
+export async function getWorkflowRunOutputsByWorkflowId( {
+  workflow_id,
+  limit = 10,
+  offset = 0,
+}: OutPutSearchTypes) {
+
+  console.log("workflow_id: ", workflow_id, limit, offset);
 
   // Step 1: 获取 workflow_version_id
   const workflowVersions = await db
     .select()
     .from(workflowVersionTable)
-    .where(eq(workflowVersionTable.workflow_id, workflowId));
+    .where(eq(workflowVersionTable.workflow_id, workflow_id));
 
   const workflowVersionIds = workflowVersions.map((version) => version.id);
 
@@ -47,13 +53,15 @@ export async function getWorkflowRunOutputsByWorkflowId(
     where: inArray(workflowRunOutputs.run_id, runIds),
     orderBy: desc(workflowRunOutputs.created_at),
     offset: offset,
-    limit: itemsPerPage,
+    limit: limit,
     extras: {
       total: sql<number>`count(*) over ()`.as("total"),
     },
   });
 
   const total = runOutputs.length > 0 ? runOutputs[0].total : 0;
+
+  console.log("runOutPuts: ",runOutputs);
 
   // 预处理数据，提取出图片和 GIF URL
 const processedData = runOutputs.flatMap((output) => {
@@ -73,6 +81,8 @@ const processedData = runOutputs.flatMap((output) => {
 
   return [...images, ...gifs];
 });
+
+console.log("processedData: ", processedData, total);
 
   return { data: processedData, total };
 }
