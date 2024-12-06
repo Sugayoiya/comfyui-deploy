@@ -15,16 +15,12 @@ export default function Page({
 }) {
   const workflow_id = params.workflow_id;
 
-  const handleNavigation = () => {
-    window.location.href = `/gallery/${workflow_id}`;
-  };
-
   return (
     <Card className="w-full h-fit min-w-0">
       <CardHeader className="relative">
         <CardTitle>Gallery</CardTitle>
         <div className="absolute right-6 top-6">
-          <RouteRefresher interval={5000} autoRefresh={true} />
+          <RouteRefresher interval={20000} autoRefresh={false} />
         </div>
       </CardHeader>
 
