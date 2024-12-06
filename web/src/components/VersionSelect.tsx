@@ -478,33 +478,43 @@ export function CopyWorkflowVersion({
         <DropdownMenuItem
           onClick={async () => {
             if (!workflow) return;
-
+  
             // console.log(workflow_version?.workflow);
-
+  
             workflow_version?.workflow?.nodes.forEach((x: any) => {
               if (x?.type === "ComfyDeploy") {
                 x.widgets_values[1] = workflow.id;
                 x.widgets_values[2] = workflow_version.version;
               }
             });
-
-            navigator.clipboard.writeText(
-              JSON.stringify(workflow_version?.workflow),
-            );
-            toast("Copied to clipboard");
+  
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(
+                JSON.stringify(workflow_version?.workflow)
+              );
+              toast("Copied to clipboard");
+            } else {
+              console.error("Clipboard API not supported");
+              toast("Clipboard API not supported");
+            }
           }}
         >
           Copy (JSON)
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={async () => {
-            navigator.clipboard.writeText(
-              JSON.stringify(workflow_version?.workflow_api),
-            );
-            toast("Copied to clipboard");
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(
+                JSON.stringify(workflow_version?.workflow_api)
+              );
+              toast("Copied to clipboard");
+            } else {
+              console.error("Clipboard API not supported");
+              toast("Clipboard API not supported");
+            }
           }}
         >
-          Copy API (JSON)
+          Copy (API)
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
