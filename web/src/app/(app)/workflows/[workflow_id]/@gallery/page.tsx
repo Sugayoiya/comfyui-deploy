@@ -20,7 +20,7 @@ export default function Page({
       <CardHeader className="relative">
         <CardTitle>Gallery</CardTitle>
         <div className="absolute right-6 top-6">
-          <RouteRefresher interval={20000} autoRefresh={false} />
+          <RouteRefresher interval={5000} autoRefresh={true} />
         </div>
       </CardHeader>
 
