@@ -1,19 +1,22 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button"; // 假设你有一个 Button 组件
-import { useRouter } from "next/navigation"; // 使用 next/navigation 进行导航
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { LoadingWrapper } from "@/components/LoadingWrapper";
+import { Gallery } from "@/components/Gallery";
+
 
 export default function Page({
   params,
+  searchParams,
 }: {
   params: { workflow_id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const workflow_id = params.workflow_id;
-  const router = useRouter();
 
   const handleNavigation = () => {
-    router.push(`/workflows/${workflow_id}/gallery_download`);
+    window.location.href = `/gallery/${workflow_id}`;
   };
 
   return (
@@ -24,6 +27,12 @@ export default function Page({
           Go to Gallery
         </Button>
       </CardHeader>
+
+      <CardContent>
+        <LoadingWrapper tag="gallery">
+          <Gallery workflow_id={workflow_id} searchParams={searchParams}/>
+        </LoadingWrapper>
+      </CardContent>
     </Card>
   );
 }

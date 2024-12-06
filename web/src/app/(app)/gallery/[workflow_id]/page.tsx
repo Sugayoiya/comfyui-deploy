@@ -1,7 +1,11 @@
-import { LoadingWrapper } from "@/components/LoadingWrapper";
-import { RouteRefresher } from "@/components/RouteRefresher";
+import { findWorkflowById } from "@/server/findFirstTableWithVersion";
+import { redirect } from "next/navigation";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Gallery } from "@/components/Gallery";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RouteRefresher } from "@/components/RouteRefresher";
+import { LoadingWrapper } from "@/components/LoadingWrapper";
+
+export const maxDuration = 300; // 5 minutes
 
 export default async function Page({
   params,
@@ -10,6 +14,9 @@ export default async function Page({
   params: { workflow_id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const workflow = await findWorkflowById(params.workflow_id);
+  if (!workflow) redirect("/workflows");
+
   const workflow_id = params.workflow_id;
 
   return (

@@ -9,7 +9,7 @@ import { parseAsInteger } from "next-usequerystate";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
-const itemPerPage = 2;
+const itemPerPage = 5;
 const pageParser = parseAsInteger.withDefault(1);
 
 export function Gallery(props: {
@@ -19,8 +19,11 @@ export function Gallery(props: {
   
   const [data, setData] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(pageParser.parseServerSide(props.searchParams?.page ?? undefined));
   const [selectedImages, setSelectedImages] = useState<number[]>([]);
+
+  const page = pageParser.parseServerSide(
+    props.searchParams?.page ?? undefined
+  );
 
   console.log(props, page);
 
@@ -115,9 +118,9 @@ export function Gallery(props: {
             </div>
           ))}
         </div>
-      {total > 0 && (
+      {Math.ceil(total / itemPerPage) > 0 && (
         <PaginationControl
-          totalPage={total}
+          totalPage={Math.ceil(total / itemPerPage)}
           currentPage={page}
         />
       )}
