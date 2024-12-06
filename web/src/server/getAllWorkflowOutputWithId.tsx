@@ -22,7 +22,7 @@ export async function getWorkflowRunOutputsByWorkflowId( {
   offset = 0,
 }: OutPutSearchTypes) {
 
-  console.log("workflow_id: ", workflow_id, limit, offset);
+  // console.log("workflow_id: ", workflow_id, limit, offset);
 
   // Step 1: 获取 workflow_version_id
   const workflowVersions = await db
@@ -61,7 +61,7 @@ export async function getWorkflowRunOutputsByWorkflowId( {
 
   const total = runOutputs.length > 0 ? runOutputs[0].total : 0;
 
-  console.log("runOutPuts: ",runOutputs);
+  // console.log("runOutPuts: ",runOutputs);
 
   // 预处理数据，提取出图片和 GIF URL
 const processedData = runOutputs.flatMap((output) => {
@@ -82,7 +82,7 @@ const processedData = runOutputs.flatMap((output) => {
   return [...images, ...gifs];
 });
 
-console.log("processedData: ", processedData, total);
+// console.log("processedData: ", processedData, total);
 
   return { data: processedData, total };
 }

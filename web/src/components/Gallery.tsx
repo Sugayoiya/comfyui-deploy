@@ -25,7 +25,7 @@ export function Gallery(props: {
     props.searchParams?.page ?? undefined
   );
 
-  console.log(props, page);
+  // console.log(props, page);
 
   useEffect(() => {
     async function fetchData() {
@@ -40,7 +40,7 @@ export function Gallery(props: {
     fetchData();
   }, [page, props.workflow_id, props.searchParams]);
 
-  console.log("data: ", data);
+  // console.log("data: ", data);
 
   // handleDownload function
   const handleDownload = async (urls: string[]) => {
