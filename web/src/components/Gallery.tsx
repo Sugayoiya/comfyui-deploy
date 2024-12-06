@@ -9,7 +9,7 @@ import { parseAsInteger } from "next-usequerystate";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
-const itemPerPage = 2;
+const itemPerPage = 50;
 const pageParser = parseAsInteger.withDefault(1);
 
 export function Gallery(props: {
