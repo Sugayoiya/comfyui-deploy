@@ -15,7 +15,7 @@ function formatDuration(seconds: number) {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
   if (minutes > 0) {
-    return `${minutes}.${remainingSeconds} mins`;
+    return `${minutes} mins ${Math.floor(remainingSeconds)} secs`;
   } else {
     return `${remainingSeconds.toFixed(1)} secs`;
   }
