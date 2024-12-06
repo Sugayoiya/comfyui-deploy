@@ -1,4 +1,5 @@
 import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
+import { json } from "stream/consumers";
 
 // This example protects all routes including api/trpc routes
 // Please edit this to allow other routes to be public as needed.
@@ -24,7 +25,21 @@ export default authMiddleware({
       // pathname.startsWith("/edit")
     ) {
       const url = new URL(req.url);
-      return redirectToSignIn({ returnBackUrl: url.origin });
+      // console.log("URL Properties:", {
+      //   href: url.href,
+      //   origin: url.origin,
+      //   protocol: url.protocol,
+      //   username: url.username,
+      //   password: url.password,
+      //   host: url.host,
+      //   hostname: url.hostname,
+      //   port: url.port,
+      //   pathname: url.pathname,
+      //   search: url.search,
+      //   searchParams: Array.from(url.searchParams.entries()),
+      //   hash: url.hash,
+      // });
+      return redirectToSignIn({ returnBackUrl: 'http://192.168.1.21:3000' });
     }
   },
 });
