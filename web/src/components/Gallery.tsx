@@ -4,12 +4,12 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { getWorkflowRunOutputsByWorkflowId } from "@/server/getAllWorkflowOutputWithId";
-import { PaginationControl } from "./PaginationControl";
+import { PaginationControl } from "./GalleryPaginationControl";
 import { parseAsInteger } from "next-usequerystate";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
-const itemPerPage = 5;
+const itemPerPage = 2;
 const pageParser = parseAsInteger.withDefault(1);
 
 export function Gallery(props: {
@@ -22,7 +22,7 @@ export function Gallery(props: {
   const [selectedImages, setSelectedImages] = useState<number[]>([]);
 
   const page = pageParser.parseServerSide(
-    props.searchParams?.page ?? undefined
+    props.searchParams?.g_page ?? undefined
   );
 
   // console.log(props, page);
