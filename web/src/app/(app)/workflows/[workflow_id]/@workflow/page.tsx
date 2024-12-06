@@ -45,11 +45,11 @@ export default async function Page({
           <VersionSelect workflow={workflow} />
           <MachineSelect machines={machines} />
           <RunWorkflowButton workflow={workflow} machines={machines} />
-          <CreateDeploymentButton workflow={workflow} machines={machines} />
-          <CreateShareButton workflow={workflow} machines={machines} />
-          <CopyWorkflowVersion workflow={workflow} />
-          <ViewWorkflowDetailsButton workflow={workflow} />
-          <OpenEditButton workflow={workflow} machines={machines} />
+          {/* <CreateDeploymentButton workflow={workflow} machines={machines} /> */}
+          {/* <CreateShareButton workflow={workflow} machines={machines} /> */}
+          {/* <CopyWorkflowVersion workflow={workflow} /> */}
+          {/* <ViewWorkflowDetailsButton workflow={workflow} /> */}
+          {/* <OpenEditButton workflow={workflow} machines={machines} /> */}
         </div>
 
         <VersionDetails workflow={workflow} />
