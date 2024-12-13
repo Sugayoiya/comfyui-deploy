@@ -346,6 +346,140 @@ export function RunWorkflowButton({
   );
 }
 
+export function BatchRunWorkflowButton({
+  workflow,
+  machines,
+}: {
+  workflow: Awaited<ReturnType<typeof findFirstTableWithVersion>>;
+  machines: Awaited<ReturnType<typeof getMachines>>;
+}) {
+  const [version] = useQueryState("version", {
+    defaultValue: workflow?.versions[0].version ?? 1,
+    ...parseAsInteger,
+  });
+  const [machine] = useSelectedMachine(machines);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [values, setValues] = useState<Record<string, string>>({});
+  const [open, setOpen] = useState(false);
+  const [runCount, setRunCount] = useState(1); // 新增状态来存储用户输入的数字
+
+  const schema = useMemo(() => {
+    const workflow_version = getWorkflowVersionFromVersionIndex(
+      workflow,
+      version,
+    );
+
+    if (!workflow_version) return null;
+
+    return workflowVersionInputsToZod(workflow_version);
+  }, [version]);
+
+  const runWorkflow = async () => {
+    console.log(values);
+
+    const val = Object.keys(values).length > 0 ? values : undefined;
+
+    const workflow_version_id = workflow?.versions.find(
+      (x) => x.version === version,
+    )?.id;
+    console.log(workflow_version_id);
+    if (!workflow_version_id) return;
+
+    setIsLoading(true);
+    try {
+      const origin = window.location.origin;
+      for (let i = 0; i < runCount; i++) { // 循环执行runWorkflow
+        await callServerPromise(
+          createRun({
+            origin,
+            workflow_version_id,
+            machine_id: machine,
+            inputs: val,
+            runOrigin: "manual",
+          }),
+        );
+      }
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
+
+    setOpen(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild className="appearance-none hover:cursor-pointer">
+        <Button className="gap-2" disabled={isLoading}>
+          BatchRun {isLoading ? <LoadingIcon /> : <Play size={14} />}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-xl">
+        <DialogHeader>
+          <DialogTitle>Confirm run</DialogTitle>
+          <DialogDescription>
+            {schema
+              ? "Run your workflow with custom inputs"
+              : "Confirm to run your workflow"}
+          </DialogDescription>
+        </DialogHeader>
+        {schema && (
+          <AutoForm
+            formSchema={schema}
+            values={values}
+            onValuesChange={setValues}
+            onSubmit={runWorkflow}
+            className="px-1"
+          >
+            <div className="flex flex-col gap-4">
+              <div className="flex justify-end">
+                <label>
+                  Number of Runs:
+                  <input
+                    type="number"
+                    value={runCount}
+                    onChange={(e) => setRunCount(Number(e.target.value))}
+                    className="ml-2 p-1 border rounded"
+                    min="1"
+                  />
+                </label>
+              </div>
+              <div className="flex justify-end">
+                <AutoFormSubmit disabled={isLoading}>
+                  Run
+                  {isLoading ? <LoadingIcon /> : <Play size={14} />}
+                </AutoFormSubmit>
+              </div>
+            </div>
+          </AutoForm>
+        )}
+        {!schema && (
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-end">
+              <label>
+                Number of Runs:
+                <input
+                  type="number"
+                  value={runCount}
+                  onChange={(e) => setRunCount(Number(e.target.value))}
+                  className="ml-2 p-1 border rounded"
+                  min="1"
+                />
+              </label>
+            </div>
+            <div className="flex justify-end">
+              <Button className="gap-2" disabled={isLoading} onClick={runWorkflow}>
+                Confirm {isLoading ? <LoadingIcon /> : <Play size={14} />}
+              </Button>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export function CreateDeploymentButton({
   workflow,
   machines,
