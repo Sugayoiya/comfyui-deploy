@@ -61,12 +61,12 @@ export default async function Main() {
 
         <Section className="items-left min-h-[calc(100dvh-73px)] flex-col ">
           <div className="flex flex-col justify-center gap-2">
-            <Section.Announcement
+            {/* <Section.Announcement
               className="text-sm"
               href="https://github.com/BennyKok/comfyui-deploy"
             >
               ✨ Open Source on Github
-            </Section.Announcement>
+            </Section.Announcement> */}
 
             <Section.Title className="text-left">
               <span className="text-5xl sm:text-6xl md:text-7xl pb-2 inline-flex animate-background-shine bg-[linear-gradient(110deg,#1e293b,45%,#939393,55%,#1e293b)] bg-[length:250%_100%] bg-clip-text text-transparent">
@@ -86,7 +86,7 @@ export default async function Main() {
             </Section.PrimaryAction>
           </div>
 
-          <div className="z-[-10] flex items-center mt-8 mb-4 w-full">
+          {/* <div className="z-[-10] flex items-center mt-8 mb-4 w-full"> */}
             {/* <Image
               loading="eager"
               // placeholder="blur"
@@ -95,14 +95,14 @@ export default async function Main() {
               src={macBookMainImage}
               alt="Find My Ports on MacBook Pro 14"
             ></Image> */}
-          </div>
+          {/* </div> */}
         </Section>
       </div>
 
       <footer className="text-base-content mx-auto flex flex-col md:flex-row items-center justify-center w-full max-w-5xl  gap-4 p-10 ">
         {/* <div className="md:col-span-4"> */}
         <div className="font-bold">{meta.name}</div>
-        <div>© {meta.author} 2023 . All rights reserved.</div>
+        <div>© {meta.author} 2024 . All rights reserved.</div>
         {/* </div> */}
       </footer>
     </div>

@@ -89,15 +89,15 @@ export function Navbar() {
       </div>
       <div className="flex flex-row items-center gap-2">
         {isDesktop && <NavbarMenu />}
-        <Button
+        {/* <Button
           asChild
           variant="link"
           className="rounded-full aspect-square p-2 mr-4"
         >
           <a href="/docs">Docs</a>
-        </Button>
+        </Button> */}
         <UserButton />
-        <Button
+        {/* <Button
           asChild
           variant="outline"
           className="rounded-full aspect-square p-2"
@@ -105,7 +105,7 @@ export function Navbar() {
           <a target="_blank" href="https://github.com/BennyKok/comfyui-deploy" rel="noreferrer">
             <Github />
           </a>
-        </Button>
+        </Button> */}
       </div>
     </>
   );
