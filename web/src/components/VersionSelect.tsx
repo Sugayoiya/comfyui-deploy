@@ -433,20 +433,18 @@ export function BatchRunWorkflowButton({
             className="px-1"
           >
             <div className="flex flex-col gap-4">
-              <div className="flex justify-end">
-                <label>
+              <div className="flex justify-end items-center gap-2">
+                <label className="flex items-center gap-2">
                   Number of Runs:
                   <input
                     type="number"
                     value={runCount}
                     onChange={(e) => setRunCount(Number(e.target.value))}
-                    className="ml-2 p-1 border rounded"
+                    className="p-1 border rounded w-20"
                     min="1"
                   />
                 </label>
-              </div>
-              <div className="flex justify-end">
-                <AutoFormSubmit disabled={isLoading}>
+                <AutoFormSubmit disabled={isLoading} className="flex items-center gap-2">
                   Run
                   {isLoading ? <LoadingIcon /> : <Play size={14} />}
                 </AutoFormSubmit>
@@ -456,19 +454,17 @@ export function BatchRunWorkflowButton({
         )}
         {!schema && (
           <div className="flex flex-col gap-4">
-            <div className="flex justify-end">
-              <label>
+            <div className="flex justify-end items-center gap-2">
+              <label className="flex items-center gap-2">
                 Number of Runs:
                 <input
                   type="number"
                   value={runCount}
                   onChange={(e) => setRunCount(Number(e.target.value))}
-                  className="ml-2 p-1 border rounded"
+                  className="p-1 border rounded w-20"
                   min="1"
                 />
               </label>
-            </div>
-            <div className="flex justify-end">
               <Button className="gap-2" disabled={isLoading} onClick={runWorkflow}>
                 Confirm {isLoading ? <LoadingIcon /> : <Play size={14} />}
               </Button>

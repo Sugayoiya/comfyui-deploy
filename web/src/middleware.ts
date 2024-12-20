@@ -39,7 +39,7 @@ export default authMiddleware({
       //   searchParams: Array.from(url.searchParams.entries()),
       //   hash: url.hash,
       // });
-      return redirectToSignIn({ returnBackUrl: 'http://192.168.1.21:3000' });
+      return redirectToSignIn({ returnBackUrl: 'http://192.168.1.26:3000' });
     }
   },
 });
