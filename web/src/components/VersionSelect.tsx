@@ -444,7 +444,7 @@ export function BatchRunWorkflowButton({
                     min="1"
                   />
                 </label>
-                <AutoFormSubmit disabled={isLoading} className="flex items-center gap-2">
+                <AutoFormSubmit disabled={isLoading}>
                   Run
                   {isLoading ? <LoadingIcon /> : <Play size={14} />}
                 </AutoFormSubmit>
