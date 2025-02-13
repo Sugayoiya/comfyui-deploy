@@ -1,6 +1,7 @@
 # this file is a helper to run Cal.com locally
 # starts a postgres instance on port 5460 to use as a local db
 version: "3.6"
+name: comfy-deploy
 services:
   postgres:
     image: "postgres:15.2-alpine"
